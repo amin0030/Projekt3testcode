@@ -10,6 +10,14 @@ function Game() {
     const navigate = useNavigate();
 
     const addPlayer = () => {
+        if (players.length >= 8) {
+            alert('The maximum number of players is 8.');
+            return;
+        }
+        if (newPlayerName.length > 10) {
+            alert('Player name cannot be longer than 10 characters.');
+            return;
+        }
         if (newPlayerName.trim() && newPlayerBalance && !isNaN(newPlayerBalance)) {
             const newPlayer = {
                 name: newPlayerName.trim(),

@@ -4,7 +4,7 @@ import HomePage from './Pages/HomePage';
 import Game from './Pages/game';
 import StatisticsPage from './Pages/StatisticsPage';
 import ActiveBetsPage from './Pages/ActiveBetsPage';
-
+import MoreStatisticsPage from './Pages/MoreStatisticsPage';  // Import the new page component
 
 function App() {
   return (
@@ -14,6 +14,7 @@ function App() {
         <Route path="/game" element={<Game />} />
         <Route path="/active-bets" element={<ActiveBetsPage />} />
         <Route path="/StatisticsPage" element={<StatisticsPage />} />
+        <Route path="/MoreStatisticsPage" element={<MoreStatisticsPage />} />  {/* New route for the More Statistics Page */}
       </Routes>
     </Router>
   );

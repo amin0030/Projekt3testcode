@@ -46,21 +46,47 @@ function saveResult(tal, farve, spiller, betAmount, betType, vinder) {
   });
 }
 
-// Function to fetch the last 10 games where there was a winner
-function getGameData() {
+// Function to fetch all game data
+function getAllGameData() {
   return new Promise((resolve, reject) => {
-    const query = `
-      SELECT id, tal, farve, spiller, betAmount, betType, vinder, timestamp 
-      FROM games 
-      WHERE vinder != 'No winner'
-      ORDER BY timestamp DESC 
-      LIMIT 10
-    `;
+    const query = "SELECT id, tal, farve, spiller, betAmount, betType, vinder, timestamp FROM games ORDER BY timestamp DESC";
 
     db.all(query, (error, rows) => {
       if (error) {
+        console.error("Error fetching all game data", error);
+        reject(new Error("Failed to fetch all game data from database. Error: " + error.message));
+      } else {
+        console.log(`Fetched ${rows.length} games.`);
+        resolve(rows);
+      }
+    });
+  });
+}
+
+// Function to fetch all game results
+function getGameData() {
+  return new Promise((resolve, reject) => {
+    db.all("SELECT id, tal, farve, spiller, betAmount, betType, vinder, timestamp FROM games ORDER BY timestamp DESC", (error, rows) => {
+      if (error) {
         console.error("Error fetching game data", error);
         reject(new Error("Failed to fetch game data from database. Error: " + error.message));
+      } else {
+        console.log(`Fetched ${rows.length} games.`);
+        resolve(rows);
+      }
+    });
+  });
+}
+
+// Function to fetch game data with winners only
+function getGamesWithWinners() {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT id, tal, farve, spiller, betAmount, betType, vinder, timestamp FROM games WHERE vinder = 'Winner' ORDER BY timestamp DESC";
+
+    db.all(query, (error, rows) => {
+      if (error) {
+        console.error("Error fetching game data with winners", error);
+        reject(new Error("Failed to fetch game data with winners from database. Error: " + error.message));
       } else {
         console.log(`Fetched ${rows.length} games with winners.`);
         resolve(rows);
@@ -86,6 +112,8 @@ function clearResults() {
 
 module.exports = {
   saveResult,
+  getAllGameData,
   getGameData,
+  getGamesWithWinners, 
   clearResults
 };
